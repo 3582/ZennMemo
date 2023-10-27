@@ -324,3 +324,5 @@ title: "基本的なターミナルコマンド"
 
     このコマンドは、現在のユーザーによって実行された過去のコマンドのリストを表示します。
     :::
+
+**https://www.hostinger.com/tutorials/linux-commands**
