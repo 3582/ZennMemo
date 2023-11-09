@@ -164,7 +164,7 @@ title: "GoF Design Patterns（GoFデザインパターン）"
 
 :::
 
-1. **Structural Patterns（構造パターン）**
+2. **Structural Patterns（構造パターン）**
    - Adapter（アダプター）
    - Bridge（ブリッジ）
    - Composite（コンポジット）
@@ -358,7 +358,7 @@ title: "GoF Design Patterns（GoFデザインパターン）"
 
 :::
 
-1. **Behavioral Patterns（振る舞いパターン）**
+3. **Behavioral Patterns（振る舞いパターン）**
    - Chain of Responsibility（責任連鎖）
    - Command（コマンド）
    - Interpreter（インタープリタ）
