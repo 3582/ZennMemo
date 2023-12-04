@@ -1,88 +1,60 @@
 ---
-title: "Web Security"
+title: "Web Sockets"
 ---
-ウェブセキュリティは、ウェブアプリケーションやウェブサービスを保護するための重要な側面です。
+### Web Socketsの概要
 
-- **MD5とその使用を避けるべき理由**: MD5は衝突耐性が低く、セキュリティが弱いため、現代のセキュリティ基準には不適切です。
-- **SHAファミリー**: SHA（Secure Hash Algorithm）ファミリーは、より強力なセキュリティを提供するハッシュ関数で、データの整合性確認やデジタル署名に使用されます。
-- **scryptとbcrypt**: これらはパスワードのハッシュ化に特化したアルゴリズムで、ソルトを使用し、レインボーテーブル攻撃を防ぐことができます。
-- **ハッシュアルゴリズム**: データの整合性を保証し、セキュリティを強化するために使用されます。
-- **Cookie Based Authentication**: クッキーを使用した認証方式ですが、クロスサイトスクリプティング（XSS）やクロスサイトリクエストフォージェリ（CSRF）などの攻撃に対して脆弱です。
+- **Web Sockets**は、リアルタイム通信を可能にする技術です。
+- これは、ウェブサーバーとクライアント間で持続的な接続を確立し、双方向通信を実現します。
+- 従来のHTTPリクエスト/レスポンスモデルとは異なり、Web Socketsは一度の接続で連続的なデータの交換が可能です。
 
-## 問題1: MD5ハッシュ関数の問題点は何ですか？
+### Web Socketsの利点
 
-MD5ハッシュ関数のセキュリティ上の問題点を説明してください。
+- **リアルタイム通信**: チャットアプリケーションやゲームなど、リアルタイムのデータ交換が必要なアプリケーションに適しています。
+- **効率的なデータ転送**: 開始時のハンドシェイクの後、データの転送は軽量で効率的です。
+- **双方向通信**: サーバーとクライアントが同時にデータを送受信できます。
+
+### Web Socketsの実装
+
+- Web Socketsの実装は、多くのプログラミング言語やフレームワークでサポートされています。
+- JavaScriptでは、`WebSocket` APIを使用してクライアント側でWeb Socketsを簡単に実装できます。
+
+### 問題1: Web Socketsはどのような用途に適していますか？
 
 :::details 解答
-MD5は衝突耐性が低いため、セキュリティ上の問題があります。異なる入力から同じハッシュ値を生成することが可能であり、これにより攻撃者がデータの整合性を損なうことができます。そのため、パスワードのハッシュ化などセキュリティが重要な用途には不適切です。
-
-```python
-import hashlib
-
-# MD5ハッシュの例
-hash_object = hashlib.md5(b'Hello World')
-print(hash_object.hexdigest())
-```
+Web Socketsはリアルタイム通信が必要な用途に適しています。例えば、チャットアプリケーション、オンラインゲーム、ライブストリーミングなどが挙げられます。これらのアプリケーションでは、サーバーとクライアント間で即時にデータを交換する必要があり、Web Socketsはそのための理想的な技術です。
 :::
 
-## 問題2: SHAファミリーのハッシュ関数について説明してください。
-
-SHAファミリーのハッシュ関数の特徴と、それらが一般的に使用される目的を説明してください。
+### 問題2: Web Socketsと従来のHTTPリクエスト/レスポンスモデルとの主な違いは何ですか？
 
 :::details 解答
-SHA（Secure Hash Algorithm）ファミリーは、MD5よりも強力なセキュリティを提供するハッシュ関数です。SHA-1, SHA-256などがあり、それぞれ異なる長さのハッシュ値を生成します。これらはデータの整合性確認やデジタル署名などに広く使用されています。
-
-```python
-import hashlib
-
-# SHA-256ハッシュの例
-hash_object = hashlib.sha256(b'Hello World')
-print(hash_object.hexdigest())
-```
-
+Web Socketsと従来のHTTPリクエスト/レスポンスモデルの主な違いは、Web Socketsが持続的な接続を提供し、一度の接続で連続的なデータの交換が可能である点です。一方、HTTPリクエスト/レスポンスモデルでは、各リクエストに対して個別の接続が必要であり、リアルタイム通信には適していません。
 :::
 
-## 問題3: bcryptとは何ですか？
-
-bcryptの主な用途と、なぜ広く使用されているかについて説明してください。
+### 問題3: JavaScriptでWeb Socketsを使用する基本的なコード例を示してください。
 
 :::details 解答
-bcryptは、パスワードのハッシュ化に特化したハッシュ関数です。ソルト（ランダムなデータ）を使用してハッシュ値を生成し、レインボーテーブル攻撃を防ぐことができます。また、計算コストを調整することで、将来のハードウェアの進化に対応することが可能です。
+JavaScriptでWeb Socketsを使用する基本的なコード例は以下の通りです：
 
-```python
-import bcrypt
+```javascript
+const socket = new WebSocket('ws://www.example.com/socketserver');
 
-# bcryptの例
-password = b"super secret password"
-hashed = bcrypt.hashpw(password, bcrypt.gensalt())
-print(hashed)
+socket.onopen = function(event) {
+  console.log('Connection established');
+  socket.send('Hello Server!');
+};
+
+socket.onmessage = function(event) {
+  console.log('Message from server:', event.data);
+};
+
+socket.onerror = function(event) {
+  console.error('WebSocket error:', event);
+};
+
+socket.onclose = function(event) {
+  console.log('Connection closed');
+};
 ```
 
-:::
-
-## 問題4: Cookie Based Authenticationのセキュリティリスクは何ですか？
-
-Cookie Based Authenticationを使用する際の主なセキュリティリスクと、それを軽減する方法を説明してください。
-
-:::details 解答
-Cookie Based Authenticationの主なセキュリティリスクには、クロスサイトスクリプティング（XSS）攻撃やクロスサイトリクエストフォージェリ（CSRF）攻撃があります。これらを軽減するためには、HTTPOnlyとSecureフラグをクッキーに設定し、CSRFトークンを使用することが推奨されます。
-
-```http
-Set-Cookie: sessionId=your_session_id; HttpOnly; Secure
-```
-
-:::
-
-## 問題5: HTTPSとは何ですか？
-
-HTTPSの基本的な概念と、なぜ重要なのかについて説明してください。
-
-:::details 解答
-HTTPS（Hyper Text Transfer Protocol Secure）は、HTTPにセキュリティ層を追加したプロトコルです。データの暗号化により、通信中のデータの盗聴や改ざんを防ぎます。これにより、ユーザーのプライバシーが保護され、安全なウェブブラウジングが可能になります。
-
-```bash
-# HTTPSを使用したウェブサーバーの起動例
-https-server --cert cert.pem --key key.pem
-```
-
+このコードは、WebSocketサーバーに接続し、接続が確立されたらメッセージを送信し、サーバーからのメッセージを受信し、エラーや接続の終了を処理します。
 :::
