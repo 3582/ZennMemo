@@ -1,7 +1,6 @@
 ---
-title: "不具合・障害例：Internet"
+title: "Internet"
 ---
-
 ### 1. 症状: ドメイン名を使用して Web アプリケーションにアクセスできない
 
 :::details 原因
